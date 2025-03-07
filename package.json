@@ -1,0 +1,13 @@
+{
+  "name": "music-website-root",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "start": "cd backend && npm run start",
+    "build": "cd music-website && npm run build",
+    "dev": "cd backend && npm run dev"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  }
+}

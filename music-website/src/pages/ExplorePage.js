@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { AudioContext } from '../context/AudioContext';
 import axios from 'axios';
+import baseURL from '../config/api';
 
 const ExplorePage = () => {
   const { playTrack } = useContext(AudioContext);
@@ -18,8 +19,8 @@ const ExplorePage = () => {
     const fetchTrendingTracks = async () => {
       try {
         setLoading(true);
-        const response = await axios.get('http://localhost:5000/api/search/trending');
-        setTrendingTracks(response.data.data);
+        const response = await axios.get(`${baseURL}/search/trending`);
+        setTrendingTracks(response.data.tracks || []);
         setLoading(false);
       } catch (error) {
         console.error('Error fetching trending tracks:', error);
@@ -29,8 +30,8 @@ const ExplorePage = () => {
 
     const fetchGenres = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/search/genres');
-        setGenres(response.data.data);
+        const response = await axios.get(`${baseURL}/search/genres`);
+        setGenres(response.data.genres || []);
       } catch (error) {
         console.error('Error fetching genres:', error);
       }
@@ -47,9 +48,9 @@ const ExplorePage = () => {
 
     try {
       setLoading(true);
+      const response = await axios.get(`${baseURL}/search/tracks?query=${searchQuery}`);
+      setSearchResults(response.data.tracks || []);
       setActiveTab('search');
-      const response = await axios.get(`http://localhost:5000/api/search/tracks?query=${searchQuery}`);
-      setSearchResults(response.data.data);
       setLoading(false);
     } catch (error) {
       console.error('Error searching tracks:', error);
@@ -61,10 +62,10 @@ const ExplorePage = () => {
   const handleGenreSelect = async (genreId) => {
     try {
       setLoading(true);
+      const response = await axios.get(`${baseURL}/search/genres/${genreId}/tracks`);
+      setGenreTracks(response.data.tracks || []);
       setSelectedGenre(genreId);
       setActiveTab('genre');
-      const response = await axios.get(`http://localhost:5000/api/search/genres/${genreId}/tracks`);
-      setGenreTracks(response.data.data);
       setLoading(false);
     } catch (error) {
       console.error('Error fetching genre tracks:', error);

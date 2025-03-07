@@ -41,8 +41,10 @@ mongoose
   })
   .then(() => {
     console.log('Connected to MongoDB');
-    // Start server after database connection
-    app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+    // Start server only if not running in Vercel serverless environment
+    if (process.env.NODE_ENV !== 'production') {
+      app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+    }
   })
   .catch((error) => {
     console.error('MongoDB connection error:', error);
@@ -63,3 +65,6 @@ app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).json({ message: 'Server error', error: err.message });
 });
+
+// Export the Express app for Vercel
+module.exports = app;

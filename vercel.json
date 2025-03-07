@@ -1,0 +1,15 @@
+{
+  "version": 2,
+  "buildCommand": "cd music-website && npm install && npm run build",
+  "outputDirectory": "music-website/build",
+  "rewrites": [
+    { "source": "/api/(.*)", "destination": "/backend/server.js" },
+    { "source": "/(.*)", "destination": "/music-website/build/$1" }
+  ],
+  "functions": {
+    "backend/server.js": {
+      "memory": 1024,
+      "maxDuration": 10
+    }
+  }
+}
